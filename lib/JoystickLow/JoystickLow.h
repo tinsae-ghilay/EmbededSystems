@@ -2,20 +2,28 @@
 // Created by tgk on 5/24/24.
 //
 
-#ifndef JOYSTICKHIGH_H
-#define JOYSTICKHIGH_H
+#ifndef JOYSTICKLOW_H
+#define JOYSTICKLOW_H
 
-#include <cstdint>
+#include <Arduino.h>
+#include "bitoperations.h"
+#include <avr/io.h>
 
-class JoystickHigh {
+class JoystickLow {
 
 private:
-    bool button;
-    int16_t pos_x;
-    int16_t pos_y;
+    bool btnPressed;
+    int16_t pos_x, pos_y, dead_zone;
+    int16_t xPin, yPin, btnPin;
+    int16_t cnt = 0;
+    // private functions
+    bool readBtn(); 
+    int16_t readPin(uint8_t pin);
+    long map(long x, long in_min, long in_max, long out_min, long out_max);
+    int16_t adjust(int16_t pos);
 
 public:
-    JoystickHigh(int pinX, int pinY, int pinButton);
+    JoystickLow(uint16_t x, uint16_t y, uint16_t b);
 
     // Initialisiert den Gerätetreiber. Wird einmalig zu Beginn des Mikrocontroller-Programms ausgeführt.
     void begin();
@@ -36,7 +44,12 @@ public:
 
     // Erlaubt es, die Deadzone des Joysticks einzustellen.
     void setDeadzone(int16_t deadzone);
+
+    void getDirection();
+
+    int16_t absVal(int16_t a);
+    void loop();
 };
 
 
-#endif //JOYSTICKHIGH_H
+#endif //JOYSTICKLOW_H

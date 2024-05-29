@@ -7,7 +7,7 @@ files = $(wildcard *.cpp)
 # then substitute the .cpp part of $(files) with .o
 objects = $(patsubst %.cpp,%.o,$(files))
 # executable file
-BIN = test
+BIN = ctrlr
 #g++ commands
 # g++
 CFLAG = g++

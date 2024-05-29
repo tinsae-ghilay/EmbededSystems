@@ -1,0 +1,20 @@
+{
+    "files.associations": {
+        "string": "cpp",
+        "iostream": "cpp"
+    },
+    "makefile.makefilePath": "/home/tgk/Documents/Gitea/MSE-II/Exercise_3/Makefile",
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/home/tgk/Documents/Gitea/MSE-II",
+            "binaryPath": "/home/tgk/Documents/Gitea/MSE-II/prototyp3",
+            "binaryArgs": []
+        },
+        {
+            "cwd": "/home/tgk/Documents/gitHub/EmbededSystems",
+            "binaryPath": "/home/tgk/Documents/gitHub/EmbededSystems/prototyp3",
+            "binaryArgs": []
+        }
+    ],
+    "C_Cpp.errorSquiggles": "disabled"
+}
