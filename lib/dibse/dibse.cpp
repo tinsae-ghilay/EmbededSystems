@@ -1,7 +1,14 @@
 #include "dibse.h"
 
+//wird in der setup-Funktion eines Arduino Programms aufgerufen. 
+//Diese Funktion macht derzeit noch nichts ;-)
 void DibsE::setup()
 {
+
+    // check serial, and start t if not running.
+    if(!Serial){
+        Serial.begin(9600);
+    }
     //source eduArdu software on github.
     strip.begin();
     // Initialize all pixels to 'off'
@@ -39,6 +46,7 @@ void DibsE::loop()
     a++;
 }
 
+// turns RGB LED on
 void DibsE::simpleBlinkOn(int duration, int red, int green, int blue)
 {
     // set colors of RGB 
@@ -49,6 +57,7 @@ void DibsE::simpleBlinkOn(int duration, int red, int green, int blue)
     delay(duration);
 }
 
+// Turns RGB LED off
 void DibsE::simpleBlinkOff()
 {
     // clear RGB values (set them all to 0)
