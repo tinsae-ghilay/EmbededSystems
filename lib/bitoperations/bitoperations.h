@@ -5,16 +5,20 @@
 #ifndef BITOPERATIONS_H
 #define BITOPERATIONS_H
 
+# include <Arduino.h>
+
+
+# define _SB(POSITION) (1 << POSITION)
 // setzt das Bit (d.h. das Bit nimmt den Wert 1 an) an der Stelle POSITION.
-#define SB(VALUE,POSITION)   (VALUE |=  1<<POSITION)
+#define SB(VALUE,POSITION)   (VALUE) |=  (_SB(POSITION))
 // löscht das Bit (d.h. das Bit nimmt den Wert 0 an) an der Stelle POSITION.
-#define CB(VALUE,POSITION)  (VALUE &= ~1<<POSITION)
+#define CB(VALUE,POSITION)  (VALUE) &= ~(_SB(POSITION))
 
 //  "toggelt" (hin- und herschalten) das Bit an der Stelle POSITION.
-#define TB(VALUE,POSITION)   (VALUE ^=  1<<(POSITION))
+#define TB(VALUE,POSITION)   (VALUE) ^ (_SB(POSITION))
 
 // prüft, ob das bit an der Stelle POSITION gesetzt ist (d.h. ob es den Wert 1 hat).
-#define IBS(VALUE,POSITION)  ((VALUE &  1<<(POSITION)) == 1)
+#define IBS(VALUE,POSITION)  (VALUE &  (_SB(POSITION)))
 
 // testing bit oprations 
 inline void testBitOperation(){

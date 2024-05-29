@@ -5,9 +5,7 @@
 #ifndef JOYSTICKLOW_H
 #define JOYSTICKLOW_H
 
-#include <Arduino.h>
-#include "bitoperations.h"
-#include <avr/io.h>
+#include <stdint.h>
 
 class JoystickLow {
 

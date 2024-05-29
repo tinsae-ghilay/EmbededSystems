@@ -5,9 +5,9 @@
 #include <stdint.h>
 
 const int16_t SW_pin = PE2; // digital pin connected to SW
-const int16_t X_pin = A0; // analog pin connected to VRx
-const int16_t Y_pin = A1; // analog pin connected to VRy
-const int16_t DEAD_ZONE = 50;
+const int16_t X_pin = 0; // analog pin connected to VRx
+const int16_t Y_pin = 1; // analog pin connected to VRy
+const int16_t DEAD_ZONE = 25;
 // put function declarations here
 JoystickHigh js = JoystickHigh(X_pin, Y_pin, SW_pin);
 DibsE dibse;
@@ -17,6 +17,7 @@ JoystickLow jsL = JoystickLow(X_pin, Y_pin, SW_pin);
 
 void setup()
 {
+  Serial.begin(9600);
   
   dibse.setup();
   //js.setDeadzone(DEAD_ZONE);
