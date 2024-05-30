@@ -32,7 +32,6 @@ int dur = 10;
 
 void loop() {
   unsigned long time = millis();
-	// Gebe jede Sekunde den Helligkeitswert über die serielle Schnittstelle aus
 	if (time - lastTime >= 1000) {
       //testBitOperation();
       //js.loop();
