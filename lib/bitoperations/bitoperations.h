@@ -22,7 +22,7 @@
 
 // testing bit oprations 
 inline void testBitOperation(){
-  Serial.print( "-- TESTING BIT WEIS OPERATIONS __ \n");
+  Serial.print( "-- TESTING BIT OPERATIONS __ \n");
     auto set = 0b0000000000000000; // 16 bit binary
     Serial.print("original Binary : ");
     Serial.println(set,BIN),
