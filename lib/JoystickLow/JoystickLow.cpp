@@ -83,7 +83,7 @@ void JoystickLow::getDirection()
     Serial.print("Direction = ");
     // x axis left centre or right?
     Serial.print((pos_x < 0)?" LEFT - ":(pos_x == 0)?" CENTRE - ":" RIGNT - ");
-    // y axis left centre or right?
+    // y axis Down centre or up?
     Serial.print((pos_y< 0)? "DOWN":(pos_y == 0)? "CENTRE":"UP");
     Serial.print("\n");
 }
@@ -112,7 +112,7 @@ int16_t JoystickLow::readPin(uint8_t pin)
     // too big for a dead zone, so REFS0 it is.
     // also getting channel from pin, source -- arduino forum "reading ADC register on Leonardo..."
     // and select that analog channel as input
-    // _BIT(POSITION) is a MACRO in bitoperations.
+    // _SB(POSITION) is a MACRO in bitoperations.
     ADMUX = _SB(REFS0) | analogPinToChannel(pin);
 
     // start conversion i.e set ADSC bit to ADCSRA

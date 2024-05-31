@@ -76,7 +76,7 @@ void JoystickHigh::getDirection()
     Serial.print("Direction = ");
     // x axis left centre or right?
     Serial.print((pos_x < 0)?" LEFT - ":(pos_x == 0)?" CENTRE - ":" RIGNT - ");
-    // y axis left centre or right?
+    // y axis down centre or up?
     Serial.print((pos_y< 0)? "DOWN":(pos_y == 0)? "CENTRE":"UP");
     Serial.print("\n");
 }
