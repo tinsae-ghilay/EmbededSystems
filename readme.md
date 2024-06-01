@@ -2,8 +2,8 @@
 
 ## lib
 > -  bitoperations
-> > - bitoperations.h
-### joystichigh
+  - bitoperations.h
+> joystichigh
 ##### JoystickHigh.h
 ##### JoystickHigh.cpp
 ### joysticklow
