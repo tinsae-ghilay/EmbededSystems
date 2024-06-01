@@ -3,13 +3,13 @@
 > ## lib
  > >  bitoperations
  > > > - bitoperations.h
-> > joystichigh
+ > > joystichigh
  > > > -  JoystickHigh.h
  > > > - JoystickHigh.cpp
-> > joysticklow
+ > > joysticklow
  > > > - JoystickLow.h
  > > > - JoystickLow.cpp
-> > dibse
+ > > dibse
  > > > - SimpleBlink.h
  > > > - SompleBlink.cpp
 > ## src
