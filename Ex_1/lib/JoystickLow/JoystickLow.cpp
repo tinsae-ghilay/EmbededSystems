@@ -28,7 +28,7 @@ void JoystickLow::begin()
         Serial.begin(9600);
     }
 
-    // button is ot pressed in the begining
+    // button is not pressed in the begining
     this->btnPressed = false;
 }
 
