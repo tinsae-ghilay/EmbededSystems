@@ -1,6 +1,6 @@
 //
 // Created by tgk on 5/24/24.
-// teted on Olimex eduArdu atmega32u4 arduino board.
+// tested on Olimex eduArdu atmega32u4 arduino board.
 //
 
 #include <JoystickLow.h>
