@@ -1,6 +1,6 @@
 //
 // Created by tgk on 5/24/24.
-// teted on Olimex eduArdu atmega32u4 arduino board.
+// tested on Olimex eduArdu atmega32u4 arduino board.
 //
 
 #include <JoystickLow.h>
@@ -28,7 +28,7 @@ void JoystickLow::begin()
         Serial.begin(9600);
     }
 
-    // button is ot pressed in the begining
+    // button is not pressed in the begining
     this->btnPressed = false;
 }
 
@@ -102,18 +102,22 @@ bool JoystickLow::readBtn()
     return IBS(PINE,btnPin);
 }
 
+// maped pins  source gitHub
+int8_t  pins[] = {7/*A0*/,6/*A1*/,5/*A2*/,4/*A3*/,1/*A4*/,0/*A5*/
+        ,8/*A6*/,10/*A7*/,11/*A8*/,12/*A9*/,13/*A10*/,9/*A11*/};
+
 // reads joystick pin
 int16_t JoystickLow::readPin(uint8_t pin) 
 {
     // the ADC is enabled by seting the ADC enable bit, ADEN in ADCSRA (source Sakai Datasheet_AVR-ATmega32U4.pdf, page 299).
     SB(ADCSRA, ADEN);
-    // select voltage reference  (PDF page 313) try an error :D
+    // select voltage reference  (PDF page 313) try and error :D
     // if I set it to REFS1 x and y positions come at 190 and 150 respectively, 
     // too big for a dead zone, so REFS0 it is.
     // also getting channel from pin, source -- arduino forum "reading ADC register on Leonardo..."
     // and select that analog channel as input
     // _SB(POSITION) is a MACRO in bitoperations.
-    ADMUX = _SB(REFS0) | analogPinToChannel(pin);
+    ADMUX = _SB(REFS0) | pins[pin];//analogPinToChannel(pin);
 
     // start conversion i.e set ADSC bit to ADCSRA
     SB(ADCSRA, ADSC);
