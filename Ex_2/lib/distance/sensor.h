@@ -3,23 +3,22 @@
 * Jun 2,2024
 * for Computer structures and embeded systems
 */
+# include<Arduino.h>
 
 
 #ifndef SENSOR_H
 #define SENSOR_H
-
 class Sensor{
     private:
 
-    int distance, _break;
-    int tPin;
-    int ePin;
-    bool echoing;
+    int distance;
+    uint8_t tPin;
+    uint8_t ePin;
 
 
     public:
 
-    Sensor(int tPin, int ePin);
+    Sensor(uint8_t tPin, uint8_t ePin);
 
     void setup();
     void echo();

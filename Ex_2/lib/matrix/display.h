@@ -6,20 +6,25 @@
 # ifndef DISPLAY_H
 # define DISPLAY_H
 
-# include <LedMatrix.h>
 # include <Arduino.h>
 
 class Display{
     private:
 
-    int x = 0;
-    LedMatrix matrix = LedMatrix(11,16,15);
+    int x = 0, lPin,dPin,cPin;
+
+    byte buffer[8];
 
     public:
+    Display(int latchPin, int dataPin, int clockPin);
 
     void setProximity(int duration);
     void start();
     void loop();
+    void update();
+    void clear();
+    void on();
+
 
 };
 

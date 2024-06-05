@@ -1,42 +1,26 @@
 #include "sensor.h"
 # include <Arduino.h>
 
-Sensor::Sensor(int tPin, int ePin): tPin{tPin},ePin{ePin}{}
+Sensor::Sensor(uint8_t tPin, uint8_t ePin): tPin(tPin),ePin(ePin){}
 
 // setup sets pin modes;
 void Sensor::setup()
 {
     pinMode(tPin, OUTPUT);
-    pinMode(ePin, INPUT_PULLUP);
+    pinMode(ePin, INPUT);
 }
 
-// none blocking trigger and echo distance measurement
+// echo and measure distance
 void Sensor::echo()
 {
-    uint32_t now = millis();
-    int interval = now - this->_break;
-
-    // 2 milliseconds since  measurement
-    if(interval > 2 && !echoing){
-        // turn on pin
-        digitalWrite(tPin, HIGH);
-        // set echoing to true
-        this->echoing = true;
-    }
-    // 10 mealliseconds since trigger was fired 
-    // we take measurement here
-    if(interval > 13 && echoing){
-        // read data and turn off
-        int duration = pulseIn(ePin, HIGH);
-        // distance = duration / 29 / 2 because eduArdu`s gitHub has it like this.
-        this->distance = duration /29 / 2 ;
-
-        // we turn pin off and repeat whenever called
-        digitalWrite(tPin, LOW);
-        this->_break = now;
-        echoing = false;
-    }
-    
+    digitalWrite(tPin, LOW);
+    delay(2);
+    // turn on pin
+    digitalWrite(tPin, HIGH);
+    // read data and turn off
+    int duration = pulseIn(ePin, HIGH);
+    // distance = duration / 29 / 2 because eduArdu`s gitHub has it like this.
+    this->distance = duration * 0.017;
 }
 
 // getter
