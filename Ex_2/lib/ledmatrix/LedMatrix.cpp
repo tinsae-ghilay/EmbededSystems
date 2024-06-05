@@ -61,11 +61,6 @@ void LedMatrix::update() {
 	PORTB = PORTB | 0x80;	//digitalWrite(this->latchPin, HIGH);
 }
 
-// will try this
-void LedMatrix::tryOns(int i)
-{
-}
-
 LedMatrixTextBuffer::LedMatrixTextBuffer(LedMatrix& ledMatrix) : ledMatrix(ledMatrix) {
 }
 

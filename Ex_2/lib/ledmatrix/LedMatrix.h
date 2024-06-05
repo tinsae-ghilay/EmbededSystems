@@ -71,8 +71,6 @@ public:
 	 */
 	void update();
 
-	void tryOns(int i);
-
 private:
 	int latchPin,dataPin,clockPin;
 	byte displayBuffer[8];
