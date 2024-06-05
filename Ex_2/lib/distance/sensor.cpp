@@ -25,7 +25,7 @@ void Sensor::echo()
     }
     // 10 mealliseconds since trigger was fired 
     // we take measurement here
-    if(interval > 12 && echoing){
+    if(interval > 13 && echoing){
         // read data and turn off
         int duration = pulseIn(ePin, HIGH);
         // distance = duration / 29 / 2 because eduArdu`s gitHub has it like this.
