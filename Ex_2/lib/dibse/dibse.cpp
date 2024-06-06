@@ -1,5 +1,4 @@
 # include "dibse.h"
-# include <Timer.h>
 
 //wird in der setup-Funktion eines Arduino Programms aufgerufen. 
 void DibsE::setup()

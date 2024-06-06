@@ -20,7 +20,6 @@ void loop() {
   s.echo();
   display.loop();
   if(now - last > 1000){
-    //s.echo();
     int distance = s.getDistance();
     d.setProximity(distance);
     display.setProximity(distance);

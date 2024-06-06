@@ -2,7 +2,6 @@
 #define DIBSE_H
 
 #include <Adafruit_NeoPixel.h>
-# include "Timer.h"
 
 
 
