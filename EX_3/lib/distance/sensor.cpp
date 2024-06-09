@@ -24,7 +24,8 @@ void Sensor::echo()
 }
 
 // getter
-int Sensor::getDistance()
+uint8_t Sensor::getDistance()
 {
+    echo();
     return this->distance;
 }
