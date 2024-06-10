@@ -27,68 +27,60 @@ void Ample::loop()
 {
     checkBrightness();
     if(this->nightMode){
-        if(this->cState!= BLINK){
+        // blink yellow for night
+        nightRun();
+    }else{
+        uint32_t now = millis();
+        blockWalkers();
+        allowEmergency();
+        int32_t dur = now - mark;
+        //uint8_t distance = sensor.getDistance();
+        switch (this->cState){
 
-            // blink yellow for night
-            nightRun();
-            this->cState = BLINK;
-        }
-        // if night mode is active, no need to go further
-        return;
-    }
-
-    uint32_t now = millis();
-    blockWalkers();
-    allowEmergency();
-    int32_t dur = now - mark;
-    //uint8_t distance = sensor.getDistance();
-    switch (this->cState){
-
-    // on RED
-    case RED:
-        this->red();
-        // if red on for 7 seconds-> switch to yellow
-        if(dur > 7000){
-            this->cState = YELLOW;
-            mark = now;
-        }
-        break;
-
-    // on YELLOW
-    case YELLOW:
-        this->yellow();
-        // if yellow on for 3 seconds, switch to red or green
-        if(dur > 3000){
-           if(this->toRed){
-            this->cState = RED;
-           }else{
-            this->cState = GREEN;
-           }
-           mark = now; 
-        }
-        break;
-
-    // on GREEN
-    case GREEN:
-        this->green();
-        // if green lit for 5 seconds, blink
-        if(dur > 5000){
-            this->cState = BLINK;
-            mark = now; 
-        }
-        break;
-    
-    // Blinking
-    default:
-        this->blink();
-        if(dur > 2000){
-            if(!this->nightMode){
+        // on RED
+        case RED:
+            this->red();
+            // if red on for 7 seconds-> switch to yellow
+            if(dur > 7000){
                 this->cState = YELLOW;
                 mark = now;
             }
-            // TODO BUG here
+            break;
+
+        // on YELLOW
+        case YELLOW:
+            this->yellow();
+            // if yellow on for 3 seconds, switch to red or green
+            if(dur > 3000){
+            if(this->toRed){
+                this->cState = RED;
+            }else{
+                this->cState = GREEN;
+            }
+            mark = now; 
+            }
+            break;
+
+        // on GREEN
+        case GREEN:
+            this->green();
+            // if green lit for 5 seconds, blink
+            if(dur > 5000){
+                this->cState = BLINK;
+                mark = now; 
+            }
+            break;
+        
+        // Blinking
+        default:
+            this->blink();
+            if(dur > 2000){
+                this->cState = YELLOW;
+                mark = now;
+                // TODO BUG here
+            }
+            break;
         }
-        break;
     }
 }
 // we control pressed and released button
@@ -119,7 +111,7 @@ bool Ample::btnPressed()
 void Ample::checkBrightness()
 {
     uint8_t intensity = analogRead(A2);
-    this->nightMode = intensity < 200;
+    this->nightMode = intensity < 50;
     Serial.print("Intensity = ");
     Serial.println(intensity);
 }
@@ -205,9 +197,6 @@ void Ample::allowEmergency()
 void Ample::nightRun()
 {
     // block every thing and run this continously
-    if(this->cState != BLINK){
-        this->cState = BLINK;
-    }
     while(this->nightMode){
         if(this->lState == ON){ //light was on
             off();
