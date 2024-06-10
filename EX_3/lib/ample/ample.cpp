@@ -111,6 +111,7 @@ bool Ample::btnPressed()
     return false;
 }
 
+// returns true if light intensity is below 200
 bool Ample::isNight()
 {
     uint8_t intensity = analogRead(A2);
