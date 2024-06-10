@@ -25,8 +25,11 @@ void Ample::start()
 // for continous run
 void Ample::loop()
 {
-    checkBrightness();
-    if(this->nightMode){
+    if(this->isNight()){
+        // after night mode it restarts from red
+        if(this->cState != RED) this->cState = RED;
+        // time should also be updated -> pseudo pause
+        mark = millis(); 
         // blink yellow for night
         nightRun();
     }else{
@@ -108,12 +111,12 @@ bool Ample::btnPressed()
     return false;
 }
 
-void Ample::checkBrightness()
+bool Ample::isNight()
 {
     uint8_t intensity = analogRead(A2);
-    this->nightMode = intensity < 50;
-    Serial.print("Intensity = ");
-    Serial.println(intensity);
+    //Serial.print("Lignt intensity : ");
+    //Serial.println(intensity);
+    return intensity < 200;
 }
 
 // turn red LED  on
@@ -158,16 +161,15 @@ void Ample::off()
 uint32_t tmp_mark = 0;
 void Ample::blink()
 {
-    // if night mode, change doesnt occur here, 
-    // we return without doing anything.
-    if(this->nightMode) return;
-    // if not night mode
+    
+    // start of on or off state
     uint32_t tmp = millis();
-    if(tmp - tmp_mark > 500){
-        if(this->lState == OFF){
-            // switching on and off takes place in respective functions
+    if(tmp - tmp_mark > 500){ /* 0.5 seconds passed */
+        if(this->lState == OFF){ // light was off
+            
             this->on(0,60,0);
-        }else{
+        }else{ // light was on
+            // switch off
             off();
         }
         tmp_mark = tmp;
@@ -196,18 +198,15 @@ void Ample::allowEmergency()
 }
 void Ample::nightRun()
 {
-    // block every thing and run this continously
-    while(this->nightMode){
-        if(this->lState == ON){ //light was on
-            off();
-        }else{   // light was off
-            on(30,30,0);
-        }
-        // delay
-        delay(500);
-        // check brightness
-        checkBrightness();
+    
+    if(this->lState == ON){ //light was on
+        off();
+    }else{   // light was off
+        on(30,30,0);
     }
+    // delay
+    delay(500);
+    
 
 }
 // to avoid repeated increment of time on every motion detected
@@ -217,38 +216,37 @@ void Ample::nightRun()
 uint32_t arival = 0;
 void Ample::blockWalkers(){
     uint16_t now = millis();
-    int16_t duration = now-arival;
+    int16_t duration = now - arival;
     // if less than 5 seconds have passed since first motion detection,
     // ignore triger and do nothing.
     if(duration < 5000){
-        return;
-    }
     // distance of nearest object
-    uint8_t distance = this->sensor.getDistance();
-    // motion detected // obstacle detected
-    if(distance < 20 && !(this->jWalking)){
-        Serial.println("Motion detected and is being handled.");
-        // record first detection 
-        arival = millis();
-        if(this->cState == RED){ /* light is red */
-            // prolog red by 5 seconds
-            mark+=5000;
-        }else if(this->cState == GREEN){ /* light is green */
-            // blink and go to red.
-            this->cState = BLINK;
-            mark = millis();
+        uint8_t distance = this->sensor.getDistance();
+        // motion detected // obstacle detected
+        if(distance < 5 && !(this->jWalking)){
+            Serial.println("Motion detected and is being handled.");
+            // record first detection 
+            arival = millis();
+            if(this->cState == RED){ /* light is red */
+                // prolog red by 5 seconds
+                mark+=5000;
+            }else if(this->cState == GREEN){ /* light is green */
+                // blink and go to red.
+                mark = millis();
+                this->cState = BLINK;
+            }
+            // if light was blinking ar was yellow, keep going
+            // but check if yellow transition
+            // if it was going to be green, change it so it goes to red
+            if(!this->toRed) this->toRed = true;
+            // mark the motion has been detected and avoid repeat
+            this->jWalking = true;
         }
-        // if light was blinking ar was yellow, keep going
-        // but check if yellow transition
-        // if it was going to be green, change it so it goes to red
-        if(!this->toRed) this->toRed = true;
-        // mark the motion has been detected and avoid repeat
-        this->jWalking = true;
-    }
-    // if no motion is detected for 5 seconds
-    // clear motion detection key
-    if(distance > 19 && (this->jWalking)){
-        this->jWalking = false;
+        // if no motion is detected for 5 seconds
+        // clear motion detection key
+        if(distance > 19 && (this->jWalking)){
+            this->jWalking = false;
+        }
     }
 
 }

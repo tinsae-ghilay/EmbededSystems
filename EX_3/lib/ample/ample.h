@@ -16,7 +16,7 @@ class Ample
     ColorState cState;
     LedState lState;
     btnState bState = RELEASED;
-    bool nightMode = false, toRed = false, emergency = false, jWalking = false;
+    bool toRed = false, emergency = false, jWalking = false;
     bool readBtn();
     Adafruit_NeoPixel lamp = Adafruit_NeoPixel(1, RGB_LED_PIN, NEO_GRB + NEO_KHZ800);
     Sensor sensor = Sensor(8,4);
@@ -26,7 +26,7 @@ class Ample
     void start();
     void loop();
     bool btnPressed();
-    void checkBrightness();
+    bool isNight();
     void red();
     void green();
     void yellow();
