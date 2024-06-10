@@ -205,6 +205,7 @@ void Ample::nightRun()
     }else{   // light was off
         on(30,30,0);
     }
+    Serial.println("On a night run");
     // delay
     delay(500);
     
@@ -225,16 +226,18 @@ void Ample::blockWalkers(){
         uint8_t distance = this->sensor.getDistance();
         // motion detected // obstacle detected
         if(distance < 5 && !(this->jWalking)){
-            Serial.println("Motion detected and is being handled.");
+            Serial.print("Motion detected and is being handled :");
             // record first detection 
             arival = millis();
             if(this->cState == RED){ /* light is red */
+                Serial.println(" Duration of red extended");
                 // prolog red by 5 seconds
                 mark+=5000;
             }else if(this->cState == GREEN){ /* light is green */
                 // blink and go to red.
                 mark = millis();
                 this->cState = BLINK;
+                Serial.println(" going to red");
             }
             // if light was blinking ar was yellow, keep going
             // but check if yellow transition
