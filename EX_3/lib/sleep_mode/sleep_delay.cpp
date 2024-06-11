@@ -5,38 +5,45 @@
 #include <avr/interrupt.h>
 
 
+// start watch dog interrupt
 ISR(WDT_vect) {}
 
-
+// sleep delay
+// keeps chip in Power down mode for a duration of @param seconds
 void sleep_delay(uint32_t seconds) {
 	set_sleep_mode(SLEEP_MODE_PWR_DOWN);
 
-	while (seconds > 0) {
-
-		uint8_t wdt_time_param;
-		if (seconds >= 8) {
-			wdt_time_param = WDTO_8S;
+	while (seconds > 0) { // for the given seconds
+		// @var  to interrupt 
+		// because WDT is limited to maximum of 8 seconds
+		// we will have to wake up device after some time
+		// and repeat the proccess until enough time has passed
+		uint8_t next_interrupt;
+		if (seconds >= 8) { // maximum possible duration untill interrupt
+			next_interrupt = WDTO_8S;
 			seconds -= 8;
-		} else if (seconds >= 4) {
-			wdt_time_param = WDTO_4S;
+		} else if (seconds >= 4) { // if remaining time is less than 8 seconds,  we go accordingly
+			next_interrupt = WDTO_4S;
 			seconds -= 4;
 		} else if (seconds >= 2) {
-			wdt_time_param = WDTO_2S;
+			next_interrupt = WDTO_2S;
 			seconds -= 2;
 		} else {
-			wdt_time_param = WDTO_1S;
+			next_interrupt = WDTO_1S;
 			seconds -= 1;
 		}
-
-		wdt_enable(wdt_time_param);
+		// set the time until next interrupt
+		wdt_enable(next_interrupt);
 
 		// Enable Watchdog Interrupt
-		// We need to reenable the watchdog interrupt every time the interrupt-handler gets executed
+		// so it will interrupt sleep mode after the given time
 		WDTCSR |= (1 << WDIE);
-
+		// once interrupt watchdog is ready, 
+		// enter sleep mode
 		sleep_mode();
 	}
-
+	// disable watchdog once time is expired
+	// and power down mode is done
 	wdt_disable();
 }
 

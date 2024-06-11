@@ -4,6 +4,8 @@
 
 // mark is a vriable to hold breaking points in time for switching colours
 int32_t mark = 0;
+
+// reads joystick button 
 bool Ample::readBtn()
 {
     return bit_is_set(PINE,BUTTON_PIN);
@@ -17,8 +19,6 @@ void Ample::start()
     red();
     mark = millis();
     this->sensor.setup();
-
-
 }
 
 // loop gets called from loop function in main
@@ -45,6 +45,7 @@ void Ample::loop()
             this->red();
             // if red on for 7 seconds-> switch to yellow
             if(dur > 7000){
+                Serial.println("Switching to yellow");
                 this->cState = YELLOW;
                 mark = now;
             }
@@ -55,12 +56,14 @@ void Ample::loop()
             this->yellow();
             // if yellow on for 3 seconds, switch to red or green
             if(dur > 3000){
-            if(this->toRed){
-                this->cState = RED;
-            }else{
-                this->cState = GREEN;
-            }
-            mark = now; 
+                if(this->toRed){
+                    Serial.println("Switching to Red");
+                    this->cState = RED;
+                }else{
+                    Serial.println("Switching to Green");
+                    this->cState = GREEN;
+                }
+                mark = now; 
             }
             break;
 
@@ -69,6 +72,7 @@ void Ample::loop()
             this->green();
             // if green lit for 5 seconds, blink
             if(dur > 5000){
+                Serial.println("Blinking");
                 this->cState = BLINK;
                 mark = now; 
             }
@@ -78,9 +82,9 @@ void Ample::loop()
         default:
             this->blink();
             if(dur > 2000){
+                Serial.println("Switching to yellow");
                 this->cState = YELLOW;
                 mark = now;
-                // TODO BUG here
             }
             break;
         }
@@ -226,7 +230,7 @@ void Ample::blockWalkers(){
         uint8_t distance = this->sensor.getDistance();
         // motion detected // obstacle detected
         if(distance < 5 && !(this->jWalking)){
-            Serial.print("Motion detected and is being handled :");
+            Serial.println("Motion detected and is being handled :");
             // record first detection 
             arival = millis();
             if(this->cState == RED){ /* light is red */
