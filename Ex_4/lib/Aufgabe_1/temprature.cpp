@@ -124,8 +124,7 @@ void TempratureSensor::update(){
 	this->temprature = temperature;
 }
 
-// reads actual temprature, either from
-local variable or read from device depending on @param immidiate
+// reads actual temprature, either from local variable or read from device depending on @param immidiate
 float TempratureSensor::getTemperature(bool immediate = false){
 	// if we want the immidiate temprature
 	// we have to update first
