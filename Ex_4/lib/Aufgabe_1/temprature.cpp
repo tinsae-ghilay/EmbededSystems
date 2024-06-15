@@ -123,11 +123,12 @@ void TempratureSensor::update(){
 	float temperature = (float)(rawval * 0.0625);
 	this->temprature = temperature;
 }
-// Gibt entweder (immediate == false) den von update() zwischengespeicherten Wert zurück, 
-// oder liest die aktuelle Temperatur aus (immediate == true, analog zum Joystick-Gerätetreiber)
+
+// reads actual temprature, either from
+local variable or read from device depending on @param immidiate
 float TempratureSensor::getTemperature(bool immediate = false){
 	// if we want the immidiate temprature
-	// we have to udate first
+	// we have to update first
 	if(immediate) update();
 	// and return saved temprature
 	return this->temprature;
