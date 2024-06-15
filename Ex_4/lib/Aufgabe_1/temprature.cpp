@@ -96,7 +96,7 @@ void TempratureSensor::switchToOneShotMode(){
 		}
 	}
 }
-// Erlaubt das Einstellen der Messgenauigkeit.
+// setting precision
 void TempratureSensor::setResolution(uint8_t res){
 
 	// retriev current value of configuration
