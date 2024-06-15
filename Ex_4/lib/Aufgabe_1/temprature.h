@@ -2,9 +2,24 @@
 # ifndef TEMPRATURE_H
 # define TEMPRATURE_H
 # include <Arduino.h>
+# include <Wire.h>
+# include <bitoperations.h>
+
+
+#define REG_AMBIENT         0
+#define REG_CONFIG 	        1
+#define I2C  		    0x48
 
 class TempratureSensor{
 
+    private:
+    bool oneShot = false;
+    float temprature = 0.0;
+    //uint8_t readU8(uint8_t reg);
+    uint16_t read(int reg);
+    void write(uint8_t reg, uint8_t val);
+    void setMode(bool continous);
+    uint8_t i2c;
 
     public:
 
