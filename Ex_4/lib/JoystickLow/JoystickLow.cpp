@@ -44,21 +44,24 @@ void JoystickLow::update()
 // Der mögliche Wertebereich soll von -512 (links) über 0 (Ruheposition) bis 512 (rechts) gehen.
 int16_t JoystickLow::getPosX(bool immediate)
 {
-    return immediate? this->adjust(this->xPin) : this->pos_x;
+    if(immediate) this->pos_x = this->adjust(this->xPin);
+    return this->pos_x;
 }
 
 // Gibt die aktuelle Position der y-Achse zurück.
 // Der mögliche Wertebereich soll von -512 (Unten) über 0 (Ruheposition) bis 512 (oben) gehen.
 int16_t JoystickLow::getPosY(bool immediate)
 {
-    return immediate? this->adjust(this->yPin) : this->pos_y;
+    if(immediate) this->pos_y = this->adjust(this->yPin);
+    return this->pos_y;
 }
 
 // Gibt den aktuellen Status des Buttons zurück. 
 // Rückgabewert ist true, wenn der Button gerade gedrückt ist, ansonsten false
 bool JoystickLow::getButton(bool immediate)
 {
-    return immediate? this->readBtn() : this->btnPressed;
+    if(immediate) this->btnPressed = readBtn();
+    return  this->btnPressed;
 }
 
 // Erlaubt es, die Deadzone des Joysticks einzustellen.
