@@ -63,7 +63,8 @@ void loop() {
   // update joystick to get its status
   js.update();
   // if joystick button is pressed text will stop sliding to the left
-  if(now-start > 100 && !js.getButton()){
+  // if joystick is not at rest, text will stop
+  if(now-start > 100 && !js.getButton() && js.getPosX()==0 && js.getPosY()==0){
     textBuffer.slideLeft(1);
     // every 100 millisecond is counted as one
     step++;
