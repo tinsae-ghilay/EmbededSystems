@@ -64,11 +64,13 @@ void TempratureSensor::begin(){
 	// To access one shot mode, , the device needs to initially be in Shutdown mode. 
 	// This is done by sending a byte to the CONFIG register with bit 0 set <1> and bit 7 cleared <0>
 	// Temperature-TCN75AVOA.pdf © 2006 Microchip Technology Inc. DS21935C-page 21
-	this->write(REG_CONFIG, (3 << 3) /*Fault queue length: 6*/
-							| _SB(2) /* Alert polarity: Active-high*/
-							| _SB(1) /* Alert pin interrupt mode */
-							| _SB(0) /* shutdown pin , shutdown mode activated by setting this pin to 1 and pin 7 to 0*/
-							| (0 << 7)); /* One-shot pin should be set to 0*/
+	this->write(REG_CONFIG, 
+				(3 << 3) /*Fault queue length: 6*/
+				| _SB(2) /* Alert polarity: Active-high*/
+				| _SB(1) /* Alert pin interrupt mode */
+				| _SB(0) /* shutdown pin , shutdown mode activated by setting this pin to 1 and pin 7 to 0*/
+				|( 0<<7 )/* One-shot pin should initially be set to 0 */
+				);
 	// default to one shot mode
 	Serial.println();
 	this->switchToOneShotMode();
