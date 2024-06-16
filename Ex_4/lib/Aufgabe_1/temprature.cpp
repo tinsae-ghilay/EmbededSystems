@@ -58,22 +58,22 @@ void TempratureSensor::setMode(bool one_shot)
 // Initialises the sensor.
 // partly from sample code shared on Sakai
 void TempratureSensor::begin(){
+	// 
 	Wire.begin();
-	/*Wire.beginTransmission(I2C); // Start I2C Transmission 
-	Wire.write(REG_CONFIG); // Select Configuration Register
-	Wire.write(
-		(3 << 3) // Fault queue length: 6 -> { sample code from sakai }
-		| _SB(2)// Alert polarity: Active-high -> { sample code from sakai }
-		| _SB(1)// Alert pin interrupt mode -> { sample code from sakai }
-		// To access one shot mode, , the device needs to initially be in Shutdown mode. 
-		// This is done by sending a byte to the CONFIG register with bit 0 set <1> and bit 7 cleared <0>
-		// Temperature-TCN75AVOA.pdf © 2006 Microchip Technology Inc. DS21935C-page 21
-		| _SB(0) | (0 << 7) // this is the shutdown mode -> Table 5-6 Page 21	 
-	);*/
-	this->write(REG_CONFIG,(3 << 3)| _SB(2)| _SB(1)| _SB(0) | (0 << 7));
-	Wire.endTransmission(); // End I2C Transmission
+	// To access one shot mode, , the device needs to initially be in Shutdown mode. 
+	// This is done by sending a byte to the CONFIG register with bit 0 set <1> and bit 7 cleared <0>
+	// Temperature-TCN75AVOA.pdf © 2006 Microchip Technology Inc. DS21935C-page 21
+	this->write(REG_CONFIG, (3 << 3) /*Fault queue length: 6*/
+							| _SB(2) /* Alert polarity: Active-high*/
+							| _SB(1) /* Alert pin interrupt mode */
+							| _SB(0) /* shutdown pin , shutdown mode activated by setting this pin to 1 and pin 7 to 0*/
+							| (0 << 7)); /* One-shot pin should be set to 0*/
 	// default to one shot mode
+	Serial.println();
 	this->switchToOneShotMode();
+	// inform about joystick commands one time
+	Serial.println("**** To activate continous conversion mode, press and hold Joystick button ***");
+	Serial.println();
 	this->js.setDeadzone(25);
 	this->js.begin();
 }
