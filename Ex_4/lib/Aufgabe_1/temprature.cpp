@@ -59,7 +59,7 @@ void TempratureSensor::setMode(bool one_shot)
 // partly from sample code shared on Sakai
 void TempratureSensor::begin(){
 	Wire.begin();
-	Wire.beginTransmission(I2C); // Start I2C Transmission 
+	/*Wire.beginTransmission(I2C); // Start I2C Transmission 
 	Wire.write(REG_CONFIG); // Select Configuration Register
 	Wire.write(
 		(3 << 3) // Fault queue length: 6 -> { sample code from sakai }
@@ -69,10 +69,13 @@ void TempratureSensor::begin(){
 		// This is done by sending a byte to the CONFIG register with bit 0 set <1> and bit 7 cleared <0>
 		// Temperature-TCN75AVOA.pdf © 2006 Microchip Technology Inc. DS21935C-page 21
 		| _SB(0) | (0 << 7) // this is the shutdown mode -> Table 5-6 Page 21	 
-	);
+	);*/
+	this->write(REG_CONFIG,(3 << 3)| _SB(2)| _SB(1)| _SB(0) | (0 << 7));
 	Wire.endTransmission(); // End I2C Transmission
 	// default to one shot mode
 	this->switchToOneShotMode();
+	this->js.setDeadzone(25);
+	this->js.begin();
 }
 
 // turns continous mode on.
@@ -116,10 +119,24 @@ void TempratureSensor::setResolution(uint8_t res){
 // reads current temprature 
 // and saves it to local temprature variable
 void TempratureSensor::update(){
+	// we handle joystich controls here
+	// if button is pressed we switch to continous conversion mode
+	// if not, the default is one-shot mode
+	js.update();
+	js.getButton()? this->switchToContinuousMode(): switchToOneShotMode();
 	// reseting and waiting for one-shot(bit 7) bit  isn't neccessary here
 	// because we toggle shutdown(bit 0) bit in function that sets mode(@see setMode(bool oneShot) above)
 	// according to manual if we let bit seven set to 1 after initialy setting it to 0, we can toggle between
 	// one-shot and continous just by toggling shutdown bit
+	// but just incase 
+	if(oneShot){ // if in one shot mode
+		// set one shot bit to 1
+		this->write(REG_CONFIG, _SB(7));
+		// wait for conversion to finish
+		// and one-shot to be cleared by TCN after conversion is complete
+		while(IBS(read(REG_CONFIG),7));
+		
+	}
 	// read raw data from device
 	uint16_t rawval = read(REG_AMBIENT);
 	// Remove last 4 bits
