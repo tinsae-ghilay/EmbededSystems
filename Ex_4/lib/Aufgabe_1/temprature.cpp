@@ -77,7 +77,8 @@ void TempratureSensor::begin(){
 
 // turns continous mode on.
 void TempratureSensor::switchToContinuousMode(){
-	if(this->oneShot) {
+	if(this->oneShot) { // if one shot was true
+		//set it to false, and reset onfig accordingly
 		this->setMode(!this->oneShot);
 		// print to console
 		if(Serial){
@@ -88,7 +89,8 @@ void TempratureSensor::switchToContinuousMode(){
 // turns onshot mode on
 void TempratureSensor::switchToOneShotMode(){
 	
-	if(!this->oneShot){
+	if(!this->oneShot){ // if oneSHot was false
+		//set it to false, and reset onfig accordingly
 		this->setMode(!this->oneShot);
 		// print to console too
 		if(Serial){
@@ -114,7 +116,10 @@ void TempratureSensor::setResolution(uint8_t res){
 // reads current temprature 
 // and saves it to local temprature variable
 void TempratureSensor::update(){
-	
+	// reseting and waiting for one-shot(bit 7) bit  isn't neccessary here
+	// because we toggle shutdown(bit 0) bit in function that sets mode(@see setMode(bool oneShot) above)
+	// according to manual if we let bit seven set to 1 after initialy setting it to 0, we can toggle between
+	// one-shot and continous just by toggling shutdown bit
 	// read raw data from device
 	uint16_t rawval = read(REG_AMBIENT);
 	// Remove last 4 bits
