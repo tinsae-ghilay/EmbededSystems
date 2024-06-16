@@ -2,6 +2,7 @@
 
 # include "temprature.h"
 
+// Private functions
 // reads value from a given register
 uint16_t TempratureSensor::read(int reg)
 {
@@ -53,7 +54,7 @@ void TempratureSensor::setMode(bool one_shot)
 	this->oneShot = one_shot;
 }
 
-// public
+// public functions
 
 // Initialises the sensor.
 // partly from sample code shared on Sakai
@@ -127,6 +128,7 @@ void TempratureSensor::update(){
 	// reseting and waiting for one-shot(bit 7) bit  isn't neccessary here
 	// because we toggle shutdown(bit 0) bit in function that sets mode(@see setMode(bool oneShot) above)
 	// according to manual if we let bit seven set to 1 after initialy setting it to 0, we can toggle between
+	// Temperature-TCN75AVOA.pdf © 2006 Microchip Technology Inc. DS21935C-page 21
 	// one-shot and continous just by toggling shutdown bit
 	// but just incase 
 	if(oneShot){ // if in one shot mode
