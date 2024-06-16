@@ -77,8 +77,6 @@ void TempratureSensor::begin(){
 	// inform about joystick commands one time
 	Serial.println("**** To activate continous conversion mode, press and hold Joystick button ***");
 	Serial.println();
-	this->js.setDeadzone(25);
-	this->js.begin();
 }
 
 // turns continous mode on.
@@ -122,11 +120,7 @@ void TempratureSensor::setResolution(uint8_t res){
 // reads current temprature 
 // and saves it to local temprature variable
 void TempratureSensor::update(){
-	// we handle joystich controls here
-	// if button is pressed we switch to continous conversion mode
-	// if not, the default is one-shot mode
-	js.update();
-	js.getButton()? this->switchToContinuousMode(): switchToOneShotMode();
+
 	// reseting and waiting for one-shot(bit 7) bit  isn't neccessary here
 	// because we toggle shutdown(bit 0) bit in function that sets mode(@see setMode(bool oneShot) above)
 	// according to manual if we let bit seven set to 1 after initialy setting it to 0, we can toggle between
@@ -135,6 +129,7 @@ void TempratureSensor::update(){
 	// but just incase 
 	if(oneShot){ // if in one shot mode
 		// set one shot bit to 1
+		// shutdown pin is already taken care of by setMode() function
 		this->write(REG_CONFIG, _SB(7));
 		// wait for conversion to finish
 		// and one-shot to be cleared by TCN after conversion is complete

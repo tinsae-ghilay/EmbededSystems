@@ -9,16 +9,11 @@
 
 #define REG_AMBIENT     0
 #define REG_CONFIG 	    1
-#define I2C  		    0x48
-
-# define JPINX          A0
-# define JPINY          A1
-# define JBUTTON        PE2   
+#define I2C  		    0x48 
 
 class TempratureSensor{
 
     private:
-    JoystickLow js = JoystickLow(JPINX,JPINY,JBUTTON);
     bool oneShot = false;
     float temprature = 0.0;
     uint16_t read(int reg);
