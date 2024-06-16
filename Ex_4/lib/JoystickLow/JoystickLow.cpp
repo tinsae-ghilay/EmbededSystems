@@ -117,7 +117,7 @@ int16_t JoystickLow::readPin(uint8_t pin)
     // also getting channel from pin, source -- arduino forum "reading ADC register on Leonardo..."
     // and select that analog channel as input
     // _SB(POSITION) is a MACRO in bitoperations.
-    ADMUX = _SB(REFS0) | pins[pin-18];//analogPinToChannel(pin);
+    ADMUX = _SB(REFS0) | pins[pin-18];;
 
     // start conversion i.e set ADSC bit to ADCSRA
     SB(ADCSRA, ADSC);
