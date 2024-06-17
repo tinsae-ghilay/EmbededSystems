@@ -10,7 +10,7 @@ void setup() {
     delay(1000);
 	digitalWrite(LED_PIN, LOW);
 	Serial.println(F("Done with Start up, Going to sleep"));
-	delay(10);
+	delay(20);
 }
 void loop() {
 	sleep_delay(10);
@@ -19,7 +19,7 @@ void loop() {
 	Serial.println(F("Awake"));
 	delay(1000);
 	Serial.println(F("Sleeping"));
-	delay(10);
+	delay(20);
 	// LED off befor going to sleep
 	digitalWrite(LED_PIN, LOW);
 }
