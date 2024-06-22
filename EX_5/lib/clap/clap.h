@@ -16,7 +16,7 @@ class ClapDetection{
     public:
     
     void setup(uint8_t mic, uint16_t threshold);
-    // one clap turns led off
+    
     // two claps turn led on and off
     // three claps Blink LED and of
     void update();
