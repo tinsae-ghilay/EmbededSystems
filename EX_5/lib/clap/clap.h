@@ -21,7 +21,7 @@ class ClapDetection{
     // three claps Blink LED and of
     void update();
 
-    // getter for claps (clap statr
+    // getter for claps (clap state)
     clap getState();
 };
 
